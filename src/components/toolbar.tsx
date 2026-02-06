@@ -1,5 +1,11 @@
-import type { ToolType } from "@/types";
-import { TOOLS } from "@/types";
+import {
+  ArrowRight,
+  Eraser,
+  Minus,
+  MousePointer2,
+  Square,
+  Type,
+} from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -7,14 +13,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import {
-  MousePointer2,
-  Square,
-  Minus,
-  ArrowRight,
-  Type,
-  Eraser,
-} from "lucide-react";
+import type { ToolType } from "@/types";
+import { TOOLS } from "@/types";
 
 const iconMap = {
   MousePointer2,
@@ -45,7 +45,7 @@ export function Toolbar({ currentTool, onToolChange }: ToolbarProps) {
                   "inline-flex h-9 w-9 items-center justify-center rounded-md transition-all duration-200",
                   isActive
                     ? "bg-zinc-700 text-white shadow-inner"
-                    : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+                    : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200",
                 )}
                 onClick={() => onToolChange(tool.type)}
               >

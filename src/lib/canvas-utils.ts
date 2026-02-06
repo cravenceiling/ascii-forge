@@ -18,7 +18,7 @@ export function setCell(
   grid: SparseGrid,
   x: number,
   y: number,
-  char: string
+  char: string,
 ): SparseGrid {
   const newGrid = new Map(grid);
   if (char === ASCII_CHARS.SPACE || char === "") {
@@ -34,7 +34,7 @@ export function drawHorizontalLine(
   x1: number,
   x2: number,
   y: number,
-  char: string = ASCII_CHARS.HORIZONTAL
+  char: string = ASCII_CHARS.HORIZONTAL,
 ): SparseGrid {
   const newGrid = new Map(grid);
   const startX = Math.min(x1, x2);
@@ -52,7 +52,7 @@ export function drawVerticalLine(
   y1: number,
   y2: number,
   x: number,
-  char: string = ASCII_CHARS.VERTICAL
+  char: string = ASCII_CHARS.VERTICAL,
 ): SparseGrid {
   const newGrid = new Map(grid);
   const startY = Math.min(y1, y2);
@@ -68,7 +68,7 @@ export function drawVerticalLine(
 export function drawDiagonalLine(
   grid: SparseGrid,
   start: Point,
-  end: Point
+  end: Point,
 ): SparseGrid {
   const newGrid = new Map(grid);
   const dx = Math.abs(end.x - start.x);
@@ -103,7 +103,7 @@ export function drawDiagonalLine(
 export function drawBox(
   grid: SparseGrid,
   start: Point,
-  end: Point
+  end: Point,
 ): SparseGrid {
   const newGrid = new Map(grid);
   const x1 = Math.min(start.x, end.x);
@@ -114,17 +114,27 @@ export function drawBox(
   if (x2 - x1 < 2 || y2 - y1 < 2) return newGrid;
 
   for (let x = x1; x <= x2; x++) {
-    const topChar = x === x1 || x === x2 ? ASCII_CHARS.CORNER_TL : ASCII_CHARS.HORIZONTAL;
-    const bottomChar = x === x1 || x === x2 ? ASCII_CHARS.CORNER_BL : ASCII_CHARS.HORIZONTAL;
+    const topChar =
+      x === x1 || x === x2 ? ASCII_CHARS.CORNER_TL : ASCII_CHARS.HORIZONTAL;
+    const bottomChar =
+      x === x1 || x === x2 ? ASCII_CHARS.CORNER_BL : ASCII_CHARS.HORIZONTAL;
     newGrid.set(posKey(x, y1), topChar);
     newGrid.set(posKey(x, y2), bottomChar);
   }
 
   for (let y = y1; y <= y2; y++) {
     const leftChar =
-      y === y1 ? ASCII_CHARS.CORNER_TL : y === y2 ? ASCII_CHARS.CORNER_BL : ASCII_CHARS.VERTICAL;
+      y === y1
+        ? ASCII_CHARS.CORNER_TL
+        : y === y2
+          ? ASCII_CHARS.CORNER_BL
+          : ASCII_CHARS.VERTICAL;
     const rightChar =
-      y === y1 ? ASCII_CHARS.CORNER_TR : y === y2 ? ASCII_CHARS.CORNER_BR : ASCII_CHARS.VERTICAL;
+      y === y1
+        ? ASCII_CHARS.CORNER_TR
+        : y === y2
+          ? ASCII_CHARS.CORNER_BR
+          : ASCII_CHARS.VERTICAL;
     newGrid.set(posKey(x1, y), leftChar);
     newGrid.set(posKey(x2, y), rightChar);
   }
@@ -140,7 +150,7 @@ export function drawBox(
 export function drawLine(
   grid: SparseGrid,
   start: Point,
-  end: Point
+  end: Point,
 ): SparseGrid {
   const dx = Math.abs(end.x - start.x);
   const dy = Math.abs(end.y - start.y);
@@ -157,16 +167,20 @@ export function drawLine(
 export function drawArrow(
   grid: SparseGrid,
   start: Point,
-  end: Point
+  end: Point,
 ): SparseGrid {
   let newGrid = drawLine(grid, start, end);
   newGrid = new Map(newGrid);
 
   let arrowHead: string;
   if (Math.abs(end.x - start.x) > Math.abs(end.y - start.y)) {
-    arrowHead = end.x > start.x ? ASCII_CHARS.ARROW_HEAD_RIGHT : ASCII_CHARS.ARROW_HEAD_LEFT;
+    arrowHead =
+      end.x > start.x
+        ? ASCII_CHARS.ARROW_HEAD_RIGHT
+        : ASCII_CHARS.ARROW_HEAD_LEFT;
   } else {
-    arrowHead = end.y > start.y ? ASCII_CHARS.ARROW_HEAD_DOWN : ASCII_CHARS.ARROW_HEAD_UP;
+    arrowHead =
+      end.y > start.y ? ASCII_CHARS.ARROW_HEAD_DOWN : ASCII_CHARS.ARROW_HEAD_UP;
   }
 
   newGrid.set(posKey(end.x, end.y), arrowHead);
@@ -177,7 +191,7 @@ export function drawArrow(
 export function drawText(
   grid: SparseGrid,
   start: Point,
-  text: string
+  text: string,
 ): SparseGrid {
   const newGrid = new Map(grid);
 
@@ -185,7 +199,7 @@ export function drawText(
     const x = start.x + i;
     const y = start.y;
     const char = text[i];
-    
+
     if (char !== ASCII_CHARS.SPACE) {
       newGrid.set(posKey(x, y), char);
     }
@@ -203,7 +217,7 @@ export function eraseCell(grid: SparseGrid, point: Point): SparseGrid {
 export function eraseArea(
   grid: SparseGrid,
   start: Point,
-  end: Point
+  end: Point,
 ): SparseGrid {
   const newGrid = new Map(grid);
   const x1 = Math.min(start.x, end.x);
@@ -220,9 +234,13 @@ export function eraseArea(
   return newGrid;
 }
 
-export function gridToString(grid: SparseGrid, width: number, height: number): string {
+export function gridToString(
+  grid: SparseGrid,
+  width: number,
+  height: number,
+): string {
   const lines: string[] = [];
-  
+
   for (let y = 0; y < height; y++) {
     let line = "";
     for (let x = 0; x < width; x++) {
@@ -230,7 +248,7 @@ export function gridToString(grid: SparseGrid, width: number, height: number): s
     }
     lines.push(line);
   }
-  
+
   return lines.join("\n");
 }
 

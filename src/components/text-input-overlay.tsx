@@ -1,8 +1,8 @@
-import { useRef, useEffect } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import type { Point, ViewState } from "@/types";
 import { Check, X } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import type { Point, ViewState } from "@/types";
 
 interface TextInputOverlayProps {
   position: Point | null;
@@ -41,10 +41,7 @@ export function TextInputOverlay({
   };
 
   return (
-    <div
-      className="absolute z-50 flex items-center gap-2"
-      style={style}
-    >
+    <div className="absolute z-50 flex items-center gap-2" style={style}>
       <Input
         ref={inputRef}
         type="text"

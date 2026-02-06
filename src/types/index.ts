@@ -27,7 +27,12 @@ export interface ToolConfig {
 }
 
 export const TOOLS: ToolConfig[] = [
-  { type: "selection", label: "Selection", icon: "MousePointer2", shortcut: "V" },
+  {
+    type: "selection",
+    label: "Selection",
+    icon: "MousePointer2",
+    shortcut: "V",
+  },
   { type: "box", label: "Box", icon: "Square", shortcut: "B" },
   { type: "line", label: "Line", icon: "Minus", shortcut: "L" },
   { type: "arrow", label: "Arrow", icon: "ArrowRight", shortcut: "A" },

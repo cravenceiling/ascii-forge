@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 
 interface HistoryState<T> {
   past: T[];
@@ -10,7 +10,7 @@ const MAX_HISTORY_SIZE = 50;
 
 export function useHistory<T>(
   currentState: T,
-  setCurrentState: (state: T) => void
+  setCurrentState: (state: T) => void,
 ) {
   const [history, setHistory] = useState<HistoryState<T>>({
     past: [],
@@ -40,7 +40,7 @@ export function useHistory<T>(
       }));
       setCurrentState(newState);
     },
-    [history.present, setCurrentState]
+    [history.present, setCurrentState],
   );
 
   const undo = useCallback(() => {

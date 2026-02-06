@@ -1,5 +1,5 @@
-import { useState, useCallback } from "react";
-import type { ToolType, Point } from "@/types";
+import { useCallback, useState } from "react";
+import type { Point, ToolType } from "@/types";
 import { TOOLS } from "@/types";
 
 interface UseToolOptions {
@@ -33,7 +33,7 @@ export function useTool({ onDraw }: UseToolOptions) {
       setDrawStart(point);
       setDrawEnd(point);
     },
-    [currentTool]
+    [currentTool],
   );
 
   const handleMouseMove = useCallback(
@@ -42,7 +42,7 @@ export function useTool({ onDraw }: UseToolOptions) {
         setDrawEnd(point);
       }
     },
-    [isDrawing]
+    [isDrawing],
   );
 
   const handleMouseUp = useCallback(() => {
@@ -85,13 +85,15 @@ export function useTool({ onDraw }: UseToolOptions) {
         return;
       }
 
-      const tool = TOOLS.find((t) => t.shortcut.toLowerCase() === event.key.toLowerCase());
+      const tool = TOOLS.find(
+        (t) => t.shortcut.toLowerCase() === event.key.toLowerCase(),
+      );
       if (tool && !event.ctrlKey && !event.metaKey) {
         event.preventDefault();
         handleToolChange(tool.type);
       }
     },
-    [isTyping, handleToolChange, handleTextSubmit, handleTextCancel]
+    [isTyping, handleToolChange, handleTextSubmit, handleTextCancel],
   );
 
   return {

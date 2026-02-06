@@ -1,5 +1,13 @@
+import {
+  Download,
+  Grid3x3,
+  Redo2,
+  RotateCcw,
+  Undo2,
+  ZoomIn,
+  ZoomOut,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ZoomIn, ZoomOut, RotateCcw, Download, Undo2, Redo2, Grid3x3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ZoomControlsProps {
@@ -42,7 +50,7 @@ export function ZoomControls({
               "h-8 w-8",
               canUndo
                 ? "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
-                : "text-zinc-600"
+                : "text-zinc-600",
             )}
             onClick={onUndo}
             disabled={!canUndo}
@@ -59,7 +67,7 @@ export function ZoomControls({
               "h-8 w-8",
               canRedo
                 ? "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
-                : "text-zinc-600"
+                : "text-zinc-600",
             )}
             onClick={onRedo}
             disabled={!canRedo}
@@ -76,7 +84,7 @@ export function ZoomControls({
               "h-8 w-8",
               showGrid
                 ? "bg-zinc-800 text-zinc-200 hover:bg-zinc-700 hover:text-white"
-                : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
+                : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200",
             )}
             onClick={onToggleGrid}
           >

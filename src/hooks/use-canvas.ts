@@ -1,7 +1,7 @@
-import { useState, useCallback, useEffect } from "react";
-import type { Point, ViewState, SparseGrid } from "@/types";
+import { useCallback, useEffect, useState } from "react";
 import type { AsciiGridHandle } from "@/components/ascii-grid";
-import { CHAR_WIDTH, CHAR_HEIGHT } from "@/types";
+import type { Point, SparseGrid, ViewState } from "@/types";
+import { CHAR_HEIGHT, CHAR_WIDTH } from "@/types";
 
 const INITIAL_COLS = 200;
 const INITIAL_ROWS = 100;
@@ -14,7 +14,9 @@ interface UseCanvasOptions {
 }
 
 export function useCanvas({ containerRef, asciiGridRef }: UseCanvasOptions) {
-  const [committedGrid, setCommittedGrid] = useState<SparseGrid>(() => new Map());
+  const [committedGrid, setCommittedGrid] = useState<SparseGrid>(
+    () => new Map(),
+  );
   const [scratchGrid, setScratchGrid] = useState<SparseGrid>(() => new Map());
   const [viewState, setViewState] = useState<ViewState>({
     zoom: 1,
@@ -29,7 +31,7 @@ export function useCanvas({ containerRef, asciiGridRef }: UseCanvasOptions) {
 
       return asciiGrid.screenToGrid(screenX, screenY);
     },
-    [asciiGridRef]
+    [asciiGridRef],
   );
 
   const gridToScreen = useCallback(
@@ -39,7 +41,7 @@ export function useCanvas({ containerRef, asciiGridRef }: UseCanvasOptions) {
         y: gridY * CHAR_HEIGHT * viewState.zoom + viewState.offsetY,
       };
     },
-    [viewState.zoom, viewState.offsetX, viewState.offsetY]
+    [viewState.zoom, viewState.offsetX, viewState.offsetY],
   );
 
   const getVisibleRange = useCallback(() => {
@@ -56,10 +58,22 @@ export function useCanvas({ containerRef, asciiGridRef }: UseCanvasOptions) {
     const { clientWidth, clientHeight } = container;
     const padding = 2;
 
-    const startCol = Math.max(0, Math.floor(-viewState.offsetX / (CHAR_WIDTH * viewState.zoom)) - padding);
-    const endCol = Math.ceil((clientWidth - viewState.offsetX) / (CHAR_WIDTH * viewState.zoom)) + padding;
-    const startRow = Math.max(0, Math.floor(-viewState.offsetY / (CHAR_HEIGHT * viewState.zoom)) - padding);
-    const endRow = Math.ceil((clientHeight - viewState.offsetY) / (CHAR_HEIGHT * viewState.zoom)) + padding;
+    const startCol = Math.max(
+      0,
+      Math.floor(-viewState.offsetX / (CHAR_WIDTH * viewState.zoom)) - padding,
+    );
+    const endCol =
+      Math.ceil(
+        (clientWidth - viewState.offsetX) / (CHAR_WIDTH * viewState.zoom),
+      ) + padding;
+    const startRow = Math.max(
+      0,
+      Math.floor(-viewState.offsetY / (CHAR_HEIGHT * viewState.zoom)) - padding,
+    );
+    const endRow =
+      Math.ceil(
+        (clientHeight - viewState.offsetY) / (CHAR_HEIGHT * viewState.zoom),
+      ) + padding;
 
     return { startCol, endCol, startRow, endRow };
   }, [containerRef, viewState]);

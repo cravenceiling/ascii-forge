@@ -1,27 +1,21 @@
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  memo,
-} from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { AsciiGrid, type AsciiGridHandle } from "@/components/ascii-grid";
+import { TextInputOverlay } from "@/components/text-input-overlay";
 import { Toolbar } from "@/components/toolbar";
 import { ZoomControls } from "@/components/zoom-controls";
-import { TextInputOverlay } from "@/components/text-input-overlay";
-import { AsciiGrid, type AsciiGridHandle } from "@/components/ascii-grid";
 import { useCanvas } from "@/hooks/use-canvas";
 import { useHistory } from "@/hooks/use-history";
 import {
-  gridToString,
+  drawArrow,
   drawBox,
   drawLine,
-  drawArrow,
   drawText,
   eraseArea,
+  gridToString,
   mergeGrids,
 } from "@/lib/canvas-utils";
-import type { Point, ToolType, SparseGrid } from "@/types";
-import { TOOLS, ASCII_CHARS } from "@/types";
+import type { Point, SparseGrid, ToolType } from "@/types";
+import { ASCII_CHARS, TOOLS } from "@/types";
 
 const MemoizedToolbar = memo(Toolbar);
 const MemoizedZoomControls = memo(ZoomControls);
@@ -45,16 +39,15 @@ function App() {
     asciiGridRef,
   });
 
-  const {
-    undo,
-    redo,
-    canUndo,
-    canRedo,
-    push,
-  } = useHistory<SparseGrid>(committedGrid, setCommittedGrid);
+  const { undo, redo, canUndo, canRedo, push } = useHistory<SparseGrid>(
+    committedGrid,
+    setCommittedGrid,
+  );
 
   const [currentTool, setCurrentTool] = useState<ToolType>("selection");
-  const [textInputPosition, setTextInputPosition] = useState<Point | null>(null);
+  const [textInputPosition, setTextInputPosition] = useState<Point | null>(
+    null,
+  );
   const [currentText, setCurrentText] = useState("");
   const [showGrid, setShowGrid] = useState(false);
 
@@ -68,9 +61,9 @@ function App() {
   const drawStartRef = useRef<Point | null>(null);
   const isTypingRef = useRef(false);
 
-  const handleTextSubmitRef = useRef<() => void>(() => { });
-  const handleTextCancelRef = useRef<() => void>(() => { });
-  const handleToolChangeRef = useRef<(tool: ToolType) => void>(() => { });
+  const handleTextSubmitRef = useRef<() => void>(() => {});
+  const handleTextCancelRef = useRef<() => void>(() => {});
+  const handleToolChangeRef = useRef<(tool: ToolType) => void>(() => {});
 
   useEffect(() => {
     isTypingRef.current = textInputPosition !== null;
@@ -106,7 +99,7 @@ function App() {
       }
 
       const tool = TOOLS.find(
-        (t) => t.shortcut.toLowerCase() === e.key.toLowerCase()
+        (t) => t.shortcut.toLowerCase() === e.key.toLowerCase(),
       );
       if (tool) {
         e.preventDefault();
@@ -135,15 +128,18 @@ function App() {
           return emptyGrid;
       }
     },
-    [committedGrid]
+    [committedGrid],
   );
 
-  const handleToolChange = useCallback((tool: ToolType) => {
-    setCurrentTool(tool);
-    setTextInputPosition(null);
-    setCurrentText("");
-    setScratchGrid(new Map());
-  }, [setScratchGrid]);
+  const handleToolChange = useCallback(
+    (tool: ToolType) => {
+      setCurrentTool(tool);
+      setTextInputPosition(null);
+      setCurrentText("");
+      setScratchGrid(new Map());
+    },
+    [setScratchGrid],
+  );
 
   useEffect(() => {
     handleToolChangeRef.current = handleToolChange;
@@ -170,7 +166,7 @@ function App() {
         setScratchGrid(preview);
       }
     },
-    [screenToGrid, calculatePreview, setScratchGrid]
+    [screenToGrid, calculatePreview, setScratchGrid],
   );
 
   const handleMouseMove = useCallback(
@@ -183,12 +179,12 @@ function App() {
         const preview = calculatePreview(
           currentToolRef.current,
           drawStartRef.current,
-          point
+          point,
         );
         setScratchGrid(preview);
       }
     },
-    [screenToGrid, calculatePreview, setScratchGrid]
+    [screenToGrid, calculatePreview, setScratchGrid],
   );
 
   const handleMouseUp = useCallback(() => {
@@ -318,6 +314,10 @@ function App() {
 
       <div className="absolute right-4 top-4 z-50 text-xs text-zinc-500">
         <div className="rounded-lg border border-zinc-800 bg-zinc-900/95 px-3 py-2 shadow-lg backdrop-blur-sm">
+          <p>
+            Shortcuts: V-Selection, B-Box, L-Line, A-Arrow, T-Text, E-Eraser
+          </p>
+          <p>Ctrl+Z/Y - Undo/Redo</p>
         </div>
       </div>
 
