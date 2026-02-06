@@ -61,9 +61,9 @@ function App() {
   const drawStartRef = useRef<Point | null>(null);
   const isTypingRef = useRef(false);
 
-  const handleTextSubmitRef = useRef<() => void>(() => {});
-  const handleTextCancelRef = useRef<() => void>(() => {});
-  const handleToolChangeRef = useRef<(tool: ToolType) => void>(() => {});
+  const handleTextSubmitRef = useRef<() => void>(undefined);
+  const handleTextCancelRef = useRef<() => void>(undefined);
+  const handleToolChangeRef = useRef<(tool: ToolType) => void>(undefined);
 
   useEffect(() => {
     isTypingRef.current = textInputPosition !== null;
@@ -74,10 +74,10 @@ function App() {
       if (isTypingRef.current) {
         if (e.key === "Enter" && !e.shiftKey) {
           e.preventDefault();
-          handleTextSubmitRef.current();
+          handleTextSubmitRef.current?.();
         } else if (e.key === "Escape") {
           e.preventDefault();
-          handleTextCancelRef.current();
+          handleTextCancelRef.current?.();
         }
         return;
       }
@@ -103,7 +103,7 @@ function App() {
       );
       if (tool) {
         e.preventDefault();
-        handleToolChangeRef.current(tool.type);
+        handleToolChangeRef.current?.(tool.type);
       }
     };
 
